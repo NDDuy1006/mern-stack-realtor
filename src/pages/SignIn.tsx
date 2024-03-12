@@ -2,15 +2,20 @@
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { SignInFormType } from "../types"
+import { signin } from "../store/user/userSlice"
+import { useAppDispatch, useAppSelector } from "../store/store"
 
 
 const SignIn = () => {
+  const dispatch = useAppDispatch()
   const [formData, setFormData] = useState<SignInFormType>({
     email: "",
     password: ""
   })
-  const [error, setError] = useState(null)
-  const [loading, setLoading] = useState(false)
+  const { loading } = useAppSelector((state) => state.user)
+  const { error } = useAppSelector((state) => state.user)
+  // const [error, setError] = useState(null)
+  // const [loading, setLoading] = useState(false)
 
   const navigate = useNavigate()
 
@@ -21,30 +26,8 @@ const SignIn = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault()
-    try {
-      setLoading(true)
-      const res = await fetch("api/auth/signin",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData)
-        }
-      )
-      const data = await res.json()
-      if (data.success === false) {
-        setError(data.message)
-        setLoading(false)
-        return
-      }
-      setLoading(false)
-      setError(null)
-      navigate("/")
-    } catch (error: any) {
-      setLoading(false)
-      setError(error)
-    }
+    dispatch(signin(formData))
+      .then(() => navigate("/"))
   }
 
   return (

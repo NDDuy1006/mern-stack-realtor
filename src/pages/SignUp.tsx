@@ -1,13 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { SignUpFormType } from "../types"
+import { SignUpPayload } from "../types"
+import OAuth from "../components/OAuth"
 
 const SignUp = () => {
-  const [formData, setFormData] = useState<SignUpFormType>({
+  const [formData, setFormData] = useState<SignUpPayload>({
     username: "",
     email: "",
-    password: ""
+    password: "",
+    firstname: "",
+    lastname: "",
+    phone: ""
   })
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(false)
@@ -81,6 +85,7 @@ const SignUp = () => {
         >
           {loading ? "Loading..." : "Sign Up"}
         </button>
+        <OAuth />
       </form>
       <div className="flex gap-2 mt-5">
         <p>Have an account?</p>

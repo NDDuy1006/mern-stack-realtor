@@ -4,3 +4,9 @@ export enum ELoad {
   FULFILLED = 'fulfilled',
   REJECTED = 'rejected'
 }
+
+export enum UserType {
+  BUYER = "buyer",
+  REALTOR = "realtor",
+  ADMIN = "admin"
+}

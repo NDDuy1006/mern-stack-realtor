@@ -1,28 +1,41 @@
-import axios from "axios";
-import { SignInFormType } from "../types";
+
+import instance, { baseURL } from "../@axios/@axios";
+import { GoogleSignInPayload, SignInPayload, SignUpPayload } from "../types";
 
 interface AuthType {
-  accessToken: string;
+  accessToken: string
   refreshToken: string
 }
 
 class AuthService {
   private apis = {
     auth: {
-      signin: `${import.meta.env.VITE_API_ENDPOINT}/auth/signin`,
-      signup: "auth/signup",
+      signin: `${baseURL}/auth/signin`,
+      googleSignin: `${baseURL}/auth/sigin/google`,
+      signup: `${baseURL}/auth/signup/BUYER`,
       token: "",
       password: ""
+    },
+    user: {
+      getMe: `${baseURL}users/me`
     }
   }
 
-  signin(form: SignInFormType) {
-    return axios.post<AuthType>(this.apis.auth.signin, form)
+  signin(payload: SignInPayload) {
+    return instance.post<AuthType>(this.apis.auth.signin, payload)
+  }
+
+  goggleSignin(payload: GoogleSignInPayload) {
+    return instance.post<AuthType>(this.apis.auth.googleSignin, payload)
+  }
+
+  signup(payload: SignUpPayload) {
+    return instance.post<AuthType>(this.apis.auth.signup, payload)
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  renewToken(form: any) {
-    return axios.post(this.apis.auth.token, form)
+  renewToken(payload: any) {
+    return instance.post(this.apis.auth.token, payload)
   }
 }
 

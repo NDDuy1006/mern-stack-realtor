@@ -1,7 +1,13 @@
-interface UserType {
-  username: string;
+import { UserType } from "./enum";
+
+
+interface ResolvedUserType {
+  id: number;
+  firstname: string;
+  lastname: string;
+  phone: string;
   email: string;
-  password: string;
+  userType: UserType;
 }
 
-export default UserType
+export default ResolvedUserType

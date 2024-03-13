@@ -1,14 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { SignInFormType } from "../types"
+import { SignInPayload } from "../types"
 import { signin } from "../store/user/userSlice"
 import { useAppDispatch, useAppSelector } from "../store/store"
+import OAuth from "../components/OAuth"
 
 
 const SignIn = () => {
   const dispatch = useAppDispatch()
-  const [formData, setFormData] = useState<SignInFormType>({
+  const [formData, setFormData] = useState<SignInPayload>({
     email: "",
     password: ""
   })
@@ -52,10 +53,11 @@ const SignIn = () => {
         />
         <button
           disabled={loading}
-          className="bg-main-theme text-secondary-theme p-3 rounded uppercase hover:opacity-95 disabled:opacity-70"
+          className="bg-main-theme text-secondary-theme p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-70"
         >
           {loading ? "Loading..." : "Sign In"}
         </button>
+        <OAuth />
       </form>
       <div className="flex gap-2 mt-5">
         <p>Dont have an account yet?</p>

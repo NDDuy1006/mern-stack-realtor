@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios, { AxiosRequestConfig, InternalAxiosRequestConfig } from 'axios';
+import { clearAccessToken, loadAccessToken } from '../utils/storage';
 
 export type BaseUrl = 'db' | '';
 
@@ -44,11 +45,42 @@ const instance = axios.create({
 });
 
 instance.interceptors.request.use(
+  
   function (config: InternalAxiosRequestConfig) {
     config.baseURL = `${import.meta.env.VITE_API_ENDPOINT}`
+    
+    if (config.headers?.isRequestAuthentication) {
+      const accessToken = loadAccessToken()
 
-    return { ...config }
+      if (accessToken) {
+        // check if the token has expired
+        const parseAccessTokenGlobal = JSON.parse(
+          window.atob(accessToken.split('.')[1].replace('-', '+').replace('_', '/'))
+        );
+        const tokenExpiration = parseAccessTokenGlobal?.exp;
+        const currentTime = Math.floor(Date.now() / 1000);
+
+        if (tokenExpiration <= currentTime) {
+          // await renewTokenFunc(config);
+          clearAccessToken()
+        } else {
+          // Token is still valid, add it to the request headers
+          Object.assign(config.headers || '', {
+            Authorization: `Bearer ${accessToken}`
+          });
+        }
+        // Token is still valid, add it to the request headers
+          Object.assign(config.headers || '', {
+            Authorization: `Bearer ${accessToken}`
+          });
+      }
+    }
+    delete config.headers?.isRequestAuthentication;
+
+    return config
   }
 )
+
+export const baseURL = axios.defaults.baseURL = import.meta.env.VITE_API_ENDPOINT
 
 export default instance;

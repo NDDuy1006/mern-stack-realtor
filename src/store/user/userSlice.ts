@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { GoogleSignInPayload, ResolvedUserType, SignInPayload } from "../../types";
+import { GoogleSignInPayload, ResolvedUserType, SignInPayload, SignUpPayload } from "../../types";
 import { authService } from "../../services/auth.service";
 import { ELoad } from "../../types/enum";
 import { clearAccessToken, saveAccessToken, saveRefreshToken } from "../../utils/storage";
@@ -10,6 +10,14 @@ export const signin = createAsyncThunk(
   "user/signin",
   async (payload: SignInPayload) => {
     const response = await authService.signin(payload)
+    return response.data
+  }
+)
+
+export const signup = createAsyncThunk(
+  "user/signup",
+  async (payload: SignUpPayload) => {
+    const response = await authService.signup(payload)
     return response.data
   }
 )

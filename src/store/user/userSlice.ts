@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { GoogleSignInPayload, ResolvedUserType, SignInPayload, SignUpPayload } from "../../types";
 import { authService } from "../../services/auth.service";
 import { ELoad } from "../../types/enum";
-import { clearAccessToken, saveAccessToken, saveRefreshToken } from "../../utils/storage";
+import { clearAccessToken, clearRefreshToken, saveAccessToken, saveRefreshToken } from "../../utils/storage";
 import { accountService } from "../../services/account.service";
 
 export const signin = createAsyncThunk(
@@ -35,6 +35,14 @@ export const getMe = createAsyncThunk(
   async () => {
     const response = await accountService.getMe()
     return response.data
+  }
+)
+
+export const renewToken = createAsyncThunk(
+  "user/renewToken",
+  async (token: string) => {
+    const response = await authService.renewToken(token)
+    return response.data.access_token
   }
 )
 
@@ -78,6 +86,7 @@ const userSlice = createSlice({
     // }
     logout: (state) => {
       clearAccessToken()
+      clearRefreshToken()
       state.currentUser = null
     }
   },
@@ -117,6 +126,6 @@ const userSlice = createSlice({
   }
 })
 
-// export const { signInFailure, signInStart, signInSuccess } = userSlice.actions
+export const { logout } = userSlice.actions
 export const userSelector = (state: { userStore: IUserType }) => state.userStore
 export default userSlice.reducer

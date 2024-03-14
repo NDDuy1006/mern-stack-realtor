@@ -18,8 +18,9 @@ const OAuth = () => {
       const email = result.user.email || ""
       const firstname = result.user.displayName?.split(' ').slice(0, -1).join(' ') || "";
       const lastname = result.user.displayName?.split(' ').slice(-1).join(' ') || "";
+      const avatarUrl = result.user.photoURL || ""
 
-      dispatch(googleSignin({ email, firstname, lastname }))
+      dispatch(googleSignin({ email, firstname, lastname, avatarUrl }))
       
       // const res = await fetch("/api/auth/google", {
       //   method: "POST",

@@ -5,11 +5,9 @@ import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/
 import { app } from "../firebase"
 import { useAppDispatch, useAppSelector } from "../store/store"
 import { logout } from "../store/user/userSlice"
-import { useNavigate } from "react-router-dom"
 
 const Profile = () => {
   const dispatch = useAppDispatch()
-  const navigate = useNavigate()
   const { currentUser } = useAppSelector((state) => state.user)
   const fileRef = useRef<HTMLInputElement>(null) 
   const [file, setFile] = useState<File | undefined>(undefined)

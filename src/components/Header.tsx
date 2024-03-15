@@ -1,6 +1,7 @@
 import { FaSearch } from "react-icons/fa"
 import { Link } from "react-router-dom"
 import { useAppSelector } from "../store/store"
+import DefaultProfileAvatar from "./DefaultProfileAvatar"
 
 const Header = () => {
   const { currentUser } = useAppSelector((state) => state.user)
@@ -35,7 +36,13 @@ const Header = () => {
           </Link>
             {currentUser ? (
               <Link to="/profile">
-                <img src={currentUser.avatarUrl || ""} alt="profile" className="rounded-full h-7 w-7 object-cover bg-slate-100" />
+                {
+                  currentUser.avatarUrl
+                    ? (<img src={currentUser.avatarUrl || ""} alt="profile" className="rounded-full h-7 w-7 object-cover bg-slate-100" />)
+                  : (
+                    <DefaultProfileAvatar userFirstname={currentUser.firstname} className="h-7 w-7" />
+                    )
+                }
                 {/* <li className="sm:inline hover:underline cursor-pointer">
                   Profile
                 </li> */}

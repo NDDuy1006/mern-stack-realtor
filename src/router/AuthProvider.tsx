@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ReactElement, useEffect } from 'react';
 import { loadAccessToken, loadRefreshToken, saveAccessToken } from '../utils/storage';
-import { useAppDispatch } from '../store/store';
+import { useAppDispatch, useAppSelector } from '../store/store';
 import { getMe, logout, renewToken } from '../store/user/userSlice';
 
 const AuthProvider = ({ children }: { children: ReactElement }) => {
-  const accessToken = loadAccessToken()
+  const { currentUser } = useAppSelector((state) => state.user)
+  const accessToken = currentUser && loadAccessToken()
   const refreshToken = loadRefreshToken()
   const dispatch = useAppDispatch()
 

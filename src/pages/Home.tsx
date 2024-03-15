@@ -9,8 +9,7 @@
 const Home = () => {
   // const dispatch = useAppDispatch()
   // const [homes, setHomes] = useState<any>([])
-  // const accessToken = loadAccessToken()
-  // console.log("🚀🚀🚀 Oi oi oi ~ accessToken 🚀🚀🚀:", accessToken)
+  // const accessToken = loadAccessToken() || ""
   // useEffect(() => {
   //   if (accessToken)
   //     dispatch(getMe())

@@ -2,7 +2,7 @@
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { SignInPayload } from "../types"
-import { signin } from "../store/user/userSlice"
+import { getMe, signin } from "../store/user/userSlice"
 import { useAppDispatch, useAppSelector } from "../store/store"
 import OAuth from "../components/OAuth"
 
@@ -28,7 +28,12 @@ const SignIn = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault()
     dispatch(signin(formData))
+      .then(() => dispatch(getMe()))
       .then(() => navigate("/"))
+      .catch(() => {
+        // console.log(error);
+        
+      })
   }
 
   return (
